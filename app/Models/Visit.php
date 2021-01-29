@@ -15,9 +15,4 @@ class Visit extends Model
     {
         return $this->belongsTo(Link::class);
     }
-
-    public function visits()
-    {
-        return $this->hasManyThrough(Visit::class, Link::class);
-    }
 }
