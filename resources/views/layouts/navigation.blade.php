@@ -46,6 +46,10 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
+                            <x-dropdown-link :href="route('user.show',['user'=>auth()->user()])">
+                                {{ __('Visit your page') }}
+                            </x-dropdown-link>
+
                             <x-dropdown-link :href="route('user.edit')">
                                 {{ __('Settings') }}
                             </x-dropdown-link>
