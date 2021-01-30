@@ -3795,6 +3795,23 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
+var user_links = document.querySelectorAll('.user-link');
+user_links.forEach(function (user_link) {
+  user_link.addEventListener('mousedown', function (event) {
+    var link_id = user_link.dataset.linkId;
+    var link_url = user_link.getAttribute("href");
+    console.log(link_id);
+    console.log(link_url);
+    axios.post("/visit/".concat(link_id), {
+      link: link_url
+    }).then(function (response) {
+      return console.log('response:', response);
+    })["catch"](function (error) {
+      return console.error('response:', error);
+    });
+  });
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -3816,7 +3833,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
- */
+*/
 // import Echo from 'laravel-echo';
 // window.Pusher = require('pusher-js');
 // window.Echo = new Echo({

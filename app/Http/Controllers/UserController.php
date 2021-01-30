@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,7 +17,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $user->load('links');
+
+        return view('users.show', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -25,9 +30,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit()
     {
-        //
+        return view('users.edit', [
+            'user' => auth()->user()
+        ]);
     }
 
     /**
@@ -39,6 +46,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate(['text_color' => 'required|size:7|starts_with:#', 'background_color' => 'required|size:7|starts_with:#']);
+        auth()->user()->update($request->only([
+            'text_color',
+            'background_color'
+        ]));
+
+        return redirect()->route('user.edit');
     }
 }

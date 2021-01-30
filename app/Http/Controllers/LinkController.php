@@ -14,8 +14,13 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = auth()->user()->links()->get();
+        $links = auth()
+            ->user()
+            ->links()
+            ->with('latest_visit')
+            ->withCount('visits')
 
+            ->get();
         return view('links.index', [
             'links' => $links
         ]);
@@ -28,7 +33,7 @@ class LinkController extends Controller
      */
     public function create()
     {
-        //
+        return view('links.create');
     }
 
     /**
@@ -39,7 +44,14 @@ class LinkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['name' => 'required|string|max:255', 'link' => 'required|url']);
+        $link = auth()->user()->links()->create($request->only(['name', 'link']));
+
+        if ($link)
+        {
+            return redirect()->route('links.index');
+        }
+        return redirect()->back();
     }
 
     /**
@@ -61,7 +73,13 @@ class LinkController extends Controller
      */
     public function edit(Link $link)
     {
-        //
+        if ($link->user_id !== auth()->id())
+        {
+            return abort(403);
+        }
+        return view('links.edit', [
+            'link' => $link
+        ]);
     }
 
     /**
@@ -73,7 +91,14 @@ class LinkController extends Controller
      */
     public function update(Request $request, Link $link)
     {
-        //
+        if ($link->user_id !== auth()->id())
+        {
+            return abort(403);
+        }
+        $request->validate(['name' => 'required|string|max:255', 'link' => 'required|url']);
+        $link->update($request->only(['name', 'link']));
+
+        return redirect()->route('links.index');
     }
 
     /**
@@ -84,6 +109,12 @@ class LinkController extends Controller
      */
     public function destroy(Link $link)
     {
-        //
+        if ($link->user_id !== auth()->id())
+        {
+            return abort(403);
+        }
+
+        $link->delete();
+        return redirect()->route('links.index');
     }
 }

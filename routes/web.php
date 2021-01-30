@@ -36,11 +36,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function ()
     Route::get('links/new', [LinkController::class, 'create'])->name('links.create');
     Route::post('links/new', [LinkController::class, 'store'])->name('links.store');
     Route::get('links/{link}', [LinkController::class, 'edit'])->name('links.edit');
-    Route::post('links/{link}', [LinkController::class, 'update'])->name('links.update');
-    Route::delete('links', [LinkController::class, 'destroy'])->name('links.destroy');
+    Route::put('links/{link}', [LinkController::class, 'update'])->name('links.update');
+    Route::delete('links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
 
     Route::get('settings', [UserController::class, 'edit'])->name('user.edit');
-    Route::post('settings', [UserController::class, 'update'])->name('user.update');
+    Route::put('settings', [UserController::class, 'update'])->name('user.update');
 
     //
 });

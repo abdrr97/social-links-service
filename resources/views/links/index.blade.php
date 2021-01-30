@@ -21,36 +21,39 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white">
+                            @foreach ($links as $link)
                             <tr>
 
-                                @foreach ($links as $link)
                                 <x-table-data>{{ $link->name }}</x-table-data>
                                 <x-table-data>
-                                    <a href="{{ $link->link }}">{{ $link->link }}</a>
+                                    <a target="_blank" href="{{ $link->link }}">{{ $link->link }}</a>
                                 </x-table-data>
 
                                 <x-table-data>
-                                    0
+                                    {{ $link->visits_count }}
                                 </x-table-data>
 
                                 <x-table-data>
-                                    Aug 3, 2020 - 12:30pm
+                                    {{ $link->latest_visit ? $link->latest_visit->created_at->format('M j Y - H:ia') : 'No visits YET!'  }}
                                 </x-table-data>
 
                                 <x-table-data>
-                                    <x-button-table href="{{ route('links.edit',['id'=>$link->id]) }}">
-                                        Edit
-                                    </x-button-table>
+                                    <div class="flex justify-around">
+                                        <x-button-table href="{{ route('links.edit',['link'=>$link->id]) }}">
+                                            Edit
+                                        </x-button-table>
+                                    </div>
                                 </x-table-data>
-                                @endforeach
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
-                    <x-table.button></x-table.button>
-                    {{-- <a href="{{ route('links.create') }}">
-                        Add Link
-                    </a> --}}
+                    <div class="flex items-center justify-end mt-4">
+                        <a class="mt-3" href="{{ route('links.create') }}">
+                            {{ __('Add a Link') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

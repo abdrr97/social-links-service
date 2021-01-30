@@ -6,6 +6,11 @@ use Illuminate\View\Component;
 
 class AppLayout extends Component
 {
+    public $color;
+    public function __construct($color = 'rgba(243, 244, 246)')
+    {
+        $this->color = $color;
+    }
     /**
      * Get the view / contents that represents the component.
      *

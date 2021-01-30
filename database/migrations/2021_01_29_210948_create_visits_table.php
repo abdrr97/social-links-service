@@ -17,8 +17,8 @@ class CreateVisitsTable extends Migration
         {
             $table->id();
             $table->text('user_agent')->nullable();
+            // $table->ipAddress('user_ip')->unique()->nullable();
             $table->timestamps();
-
             $table->foreignId('link_id')
                 ->constrained('links')
                 ->onDelete('cascade');
